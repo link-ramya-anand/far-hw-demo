@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+    pre_build:
+        commands:
+            - $(aws ecr get-login --no-invlude-email --region us-east-2)
+    build:
+        commands:
+            - docker build -t myappdoc:latest .
+            - docker tag <IMAGE_NAME> <ECR_URL>
+    post_build:
+        commands:
+            - docker push 
+            - printf '|{"name":<TASK_DEF>,"imageUri":"%s"}|' <ECR_URL> > imagedefinitions.json
+    artifacts:
+        files: imagedefinitions.json
