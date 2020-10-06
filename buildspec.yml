@@ -7,10 +7,10 @@ phases:
     build:
         commands:
             - docker build -t myappdoc:latest .
-            - docker tag <IMAGE_NAME> <ECR_URL>
+            - docker tag myappdoc:latest 374849911922.dkr.ecr.us-east-2.amazonaws.com/myapprepo:latest
     post_build:
         commands:
-            - docker push 
-            - printf '|{"name":<TASK_DEF>,"imageUri":"%s"}|' <ECR_URL> > imagedefinitions.json
-    artifacts:
-        files: imagedefinitions.json
+            - docker push 374849911922.dkr.ecr.us-east-2.amazonaws.com/myapprepo:latest
+            - printf '[{"name":myapptask,"imageUri":"%s"}]' 374849911922.dkr.ecr.us-east-2.amazonaws.com/myapprepo:latest > imagedefinitions.json
+artifacts:
+    files: imagedefinitions.json
